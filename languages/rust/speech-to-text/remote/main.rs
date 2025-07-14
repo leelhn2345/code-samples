@@ -1,5 +1,6 @@
 use reqwest::blocking::Client;
 use serde::Serialize;
+use serde_json::Value;
 
 #[derive(Serialize)]
 struct RequestBody {
@@ -16,15 +17,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         url: "https://dpgr.am/spacewalk.wav".to_string(),
     };
 
-    let response = client.post(url)
+    let response = client
+        .post(url)
         .header("Content-Type", "application/json")
         .header("Authorization", format!("Token {}", api_key))
         .json(&request_body)
         .send()?;
 
     let response_text = response.text()?;
+    let response_json: Value = serde_json::from_str(&response_text)?;
+    let transcript = &response_json["results"]["channels"][0]["alternatives"][0]["transcript"];
 
-    println!("{}", response_text);
+    println!("{}", transcript);
 
     Ok(())
 }

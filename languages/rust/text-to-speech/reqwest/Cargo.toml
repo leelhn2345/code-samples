@@ -1,0 +1,12 @@
+[package]
+name = "text-to-speech-reqwest"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "tts-reqwest"
+path = "main.rs"
+
+[dependencies]
+reqwest = { workspace = true, features = ["blocking", "json"] }
+serde = { workspace = true, features = ["derive"] }

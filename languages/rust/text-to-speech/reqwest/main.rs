@@ -1,7 +1,7 @@
 use reqwest::blocking::Client;
+use serde::Serialize;
 use std::fs::File;
 use std::io::copy;
-use serde::Serialize;
 
 #[derive(Serialize)]
 struct RequestBody {
@@ -19,7 +19,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         text: "Hello, how can I help you today?".to_string(),
     };
 
-    let response = client.post(url)
+    let response = client
+        .post(url)
         .header("Content-Type", "application/json")
         .header("Authorization", format!("Token {}", api_key))
         .json(&request_body)
@@ -31,3 +32,4 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+
